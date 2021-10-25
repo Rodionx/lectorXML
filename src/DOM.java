@@ -3,6 +3,9 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,5 +36,72 @@ public class DOM {
         }
         return -1;
         
+    }
+    
+    public String mostrar(){
+        String salida = "";
+        Node node;
+        String datos_nodo[]= null;
+        
+        Node raiz = doc.getFirstChild();
+        NodeList nodelist = raiz.getChildNodes();
+        
+        for(int i =0; i<nodelist.getLength(); i++){
+            node= nodelist.item(i);
+            
+            if(node.getNodeType() == Node.ELEMENT_NODE){
+                datos_nodo = procesarLibro(node);
+                salida=salida + "\n" + "Publicado en: " + datos_nodo[0];
+                salida=salida + "\n" + "El titulo es: " + datos_nodo[1];
+                salida=salida + "\n" + "El autor es: " + datos_nodo[2];
+                salida=salida + "\n --------------------------------";
+            }
+        }
+        return salida;
+    }
+    
+    private String[] procesarLibro(Node n){
+        String datos[]= new String[3];
+        Node ntemp= null;
+        int contador = 1;
+        
+        datos[0] = n.getAttributes().item(0).getNodeValue();
+        
+        NodeList nodos = n.getChildNodes();
+        
+        for(int i=0; i<nodos.getLength(); i++){
+            ntemp = nodos.item(i);
+            
+            if(ntemp.getNodeType() == Node.ELEMENT_NODE){
+                datos[contador] = ntemp.getFirstChild().getNodeValue();
+                contador++;
+            }
+        }
+        return datos;
+    }
+    
+    public int annadir_DOM(String titulo, String autor,String anno){
+        try {
+            Node ntitulo = doc.createElement("Titulo");
+            Node ntitulo_text = doc.createTextNode(titulo);
+            ntitulo.appendChild(ntitulo_text);
+            
+            Node nautor = doc.createElement("Autor");
+            Node nautor_text = doc.createTextNode(autor);
+            ntitulo.appendChild(nautor_text);
+            
+            Node nlibro = doc.createElement("Libro");
+            
+            ((Element)nlibro).setAttribute("publicado_en", anno);
+            nlibro.appendChild(ntitulo);
+            nlibro.appendChild(nautor);
+            
+            Node raiz = doc.getFirstChild();
+            raiz.appendChild(nlibro);
+            return 0;
+            
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }
