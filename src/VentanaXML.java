@@ -212,20 +212,10 @@ public class VentanaXML extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            if(jLabel1.getText() == "Objeto DOM creado" || jLabel1.getText() == "Se añadio correctamente"){
+            
                 String mostrarAqui = gesDOM.mostrar();
                 jTextArea1.setText(mostrarAqui);
-        }else{
-            int confirmacion = JOptionPane.showConfirmDialog(null, "No hay ningun archivo(XML) abierto" + "\n ¿Quieres añadir uno?");
-            if(confirmacion ==0){
-               File ficheroXML;
-               ficheroXML= seleccionarFichero();
-               gesDOM.abrir_XML_DOM(ficheroXML);
-               jLabel1.setText("Objeto DOM creado");
-            }else if(confirmacion == 1){
-                return;
-            }
-        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

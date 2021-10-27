@@ -39,45 +39,55 @@ public class DOM {
     }
     
     public String mostrar(){
-        String salida = "";
-        Node node;
-        String datos_nodo[]= null;
-        
-        Node raiz = doc.getFirstChild();
-        NodeList nodelist = raiz.getChildNodes();
-        
-        for(int i =0; i<nodelist.getLength(); i++){
-            node= nodelist.item(i);
-            
-            if(node.getNodeType() == Node.ELEMENT_NODE){
-                datos_nodo = procesarLibro(node);
-                salida=salida + "\n" + "Publicado en: " + datos_nodo[0];
-                salida=salida + "\n" + "El titulo es: " + datos_nodo[1];
-                salida=salida + "\n" + "El autor es: " + datos_nodo[2];
-                salida=salida + "\n --------------------------------";
+        try {
+            String salida = "";
+            Node node;
+            String datos_nodo[]= null;
+
+            Node raiz = doc.getFirstChild();
+            NodeList nodelist = raiz.getChildNodes();
+
+            for(int i =0; i<nodelist.getLength(); i++){
+                node= nodelist.item(i);
+
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    datos_nodo = procesarLibro(node);
+                    salida=salida + "\n" + "Publicado en: " + datos_nodo[0];
+                    salida=salida + "\n" + "El titulo es: " + datos_nodo[1];
+                    salida=salida + "\n" + "El autor es: " + datos_nodo[2];
+                    salida=salida + "\n --------------------------------";
+                }
             }
+            return salida;
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            return null;
         }
-        return salida;
     }
     
     private String[] procesarLibro(Node n){
-        String datos[]= new String[3];
-        Node ntemp= null;
-        int contador = 1;
-        
-        datos[0] = n.getAttributes().item(0).getNodeValue();
-        
-        NodeList nodos = n.getChildNodes();
-        
-        for(int i=0; i<nodos.getLength(); i++){
-            ntemp = nodos.item(i);
-            
-            if(ntemp.getNodeType() == Node.ELEMENT_NODE){
-                datos[contador] = ntemp.getFirstChild().getNodeValue();
-                contador++;
+        try {
+            String datos[]= new String[3];
+            Node ntemp= null;
+            int contador = 1;
+
+            datos[0] = n.getAttributes().item(0).getNodeValue();
+
+            NodeList nodos = n.getChildNodes();
+
+            for(int i=0; i<nodos.getLength(); i++){
+                ntemp = nodos.item(i);
+
+                if(ntemp.getNodeType() == Node.ELEMENT_NODE){
+                    datos[contador] = ntemp.getFirstChild().getNodeValue();
+                    contador++;
+                }
             }
+            return datos;
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            return null;
         }
-        return datos;
     }
     
     public int annadir_DOM(String titulo, String autor,String anno){
@@ -88,7 +98,7 @@ public class DOM {
             
             Node nautor = doc.createElement("Autor");
             Node nautor_text = doc.createTextNode(autor);
-            ntitulo.appendChild(nautor_text);
+            nautor.appendChild(nautor_text);
             
             Node nlibro = doc.createElement("Libro");
             
@@ -101,6 +111,7 @@ public class DOM {
             return 0;
             
         } catch (Exception e) {
+            System.out.println(e.toString());
             return -1;
         }
     }
