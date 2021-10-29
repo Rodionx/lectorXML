@@ -1,5 +1,11 @@
 
+
+
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import java.io.File;
+import java.io.FileOutputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -113,6 +119,37 @@ public class DOM {
         } catch (Exception e) {
             System.out.println(e.toString());
             return -1;
+        }
+    }
+    
+    public int guardarDom(File archivo_xml){
+        try {
+            OutputFormat format = new OutputFormat(doc);
+            format.setIndenting(true);
+            XMLSerializer serializer =
+                    new XMLSerializer(new FileOutputStream(archivo_xml),format);
+            serializer.serialize(doc);
+            return 0;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return -1;
+        }
+    }
+    
+    public int modificar(String tAntiguo, String tNuevo){
+        try {
+            Node raiz = doc.getFirstChild();
+            NodeList lista = doc.getElementsByTagName("Titulo");
+            for (int i = 0; i < lista.getLength(); i++) {
+                Node tempTitulo = lista.item(i);
+                if(tempTitulo.getFirstChild().getNodeValue().equals(tAntiguo)){
+                    tempTitulo.getFirstChild().setTextContent(tNuevo);
+                }
+                
+            }
+            return 0;
+        } catch (Exception e) {
+            return 1;
         }
     }
 }
