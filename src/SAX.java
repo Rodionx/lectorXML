@@ -34,7 +34,7 @@ public class SAX {
             parser.parse(ficheroXML, sh);
             return sh.cadena_resultado;
         } catch(SAXException ex){
-            return "Error al parsear SAX";
+            return "Error al parsear SAX ";
         } catch (IOException e) {
             return "Error al parsear el SAX";
         }
