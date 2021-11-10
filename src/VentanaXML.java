@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 public class VentanaXML extends javax.swing.JFrame {
     
     DOM gesDOM = new DOM();
+    SAX gesSAX = new SAX();
     
     public VentanaXML() {
         initComponents();
@@ -38,9 +39,9 @@ public class VentanaXML extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bototnDOM = new javax.swing.JButton();
+        botonSAX = new javax.swing.JButton();
+        botonJAXB = new javax.swing.JButton();
         labelTitulo = new javax.swing.JLabel();
         textFieldTitulo = new javax.swing.JTextField();
         labelAutor = new javax.swing.JLabel();
@@ -62,16 +63,24 @@ public class VentanaXML extends javax.swing.JFrame {
 
         jLabel1.setText("<fichero XML no seleccionado>");
 
-        jButton1.setText("Mostrar contenido DOM");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bototnDOM.setText("Mostrar contenido DOM");
+        bototnDOM.setEnabled(false);
+        bototnDOM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bototnDOMActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Mostrar contenido SAX");
+        botonSAX.setText("Mostrar contenido SAX");
+        botonSAX.setEnabled(false);
+        botonSAX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSAXActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Mostrar contenido JAXB");
+        botonJAXB.setText("Mostrar contenido JAXB");
+        botonJAXB.setEnabled(false);
 
         labelTitulo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         labelTitulo.setText("Titulo");
@@ -105,7 +114,12 @@ public class VentanaXML extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("jMenuItem1");
+        jMenuItem2.setText("Abrir SAX");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("jMenuItem1");
@@ -125,11 +139,11 @@ public class VentanaXML extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(bototnDOM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                        .addComponent(botonSAX, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                        .addComponent(botonJAXB, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,9 +179,9 @@ public class VentanaXML extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(bototnDOM)
+                    .addComponent(botonSAX)
+                    .addComponent(botonJAXB))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTitulo)
@@ -209,14 +223,21 @@ public class VentanaXML extends javax.swing.JFrame {
                
            }
            
+           if(jLabel1.getText() == "Objeto DOM creado"){
+               
+                bototnDOM.setEnabled(true);
+                botonSAX.setEnabled(false);
+                botonJAXB.setEnabled(false);
+           }
+           
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bototnDOMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bototnDOMActionPerformed
             
                 String mostrarAqui = gesDOM.mostrar();
                 jTextArea1.setText(mostrarAqui);
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bototnDOMActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String titulo = textFieldTitulo.getText();
@@ -230,6 +251,35 @@ public class VentanaXML extends javax.swing.JFrame {
             jLabel1.setText("Error al añadir!!");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        File ficheroXML = seleccionarFichero();
+        gesSAX.abrir_XML_SAX(ficheroXML);
+        
+        if(ficheroXML == null){
+            this.jLabel1.setText("Vuelve a seleccionar el fichero");
+        }
+        else{
+            if(gesDOM.abrir_XML_DOM(ficheroXML) == -1){
+                this.jLabel1.setText("Error al crear el objeto SAX");
+            }else{
+                this.jLabel1.setText("Objeto SAX creado");
+            }
+
+        }
+
+        if(jLabel1.getText() == "Objeto SAX creado"){
+            
+            bototnDOM.setEnabled(false);
+            botonSAX.setEnabled(true);
+            botonJAXB.setEnabled(false);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void botonSAXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSAXActionPerformed
+                String mostrarAqui = gesSAX.recorrerSAX();
+                jTextArea1.append(mostrarAqui);
+    }//GEN-LAST:event_botonSAXActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,9 +317,9 @@ public class VentanaXML extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton botonJAXB;
+    private javax.swing.JButton botonSAX;
+    private javax.swing.JButton bototnDOM;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
